@@ -20,9 +20,9 @@
         {% endif %}
       </div>
 
-      <p class="text-muted small mb-2">
+      <a class="text-muted small mb-2" href="{% url 'users:profile_detail' activity.creator.id %}">
         Organizado por <span class="fw-semibold text-primary">{{ activity.creator.username }}</span>
-      </p>
+      </a>
       
       <p class="card-text text-secondary mb-3 text-truncate" style="max-width: 600px;">
         {{ activity.description }}
