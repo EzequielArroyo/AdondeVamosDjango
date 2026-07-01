@@ -1,9 +1,13 @@
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, RedirectView
+from django.views.generic import CreateView, DetailView
 from django.contrib.auth import login
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
+
+from apps.activities.models import Activity
+from apps.participations.models import Participation
 
 from .forms import ProfileForm, UserForm
 from .forms import RegisterForm
@@ -20,15 +24,37 @@ class RegisterView(CreateView):
         response = super().form_valid(form)     #utilizo el metodo original
         login(self.request, self.object)        #agrego el auto-login
         return response                         #El metodo original ya redirecciona a success_url
-    
-class ProfileDetailView(LoginRequiredMixin,DetailView):
+       
+class MyProfileView(LoginRequiredMixin,DetailView):
     model = Profile
-    template_name = "users/profile.html"
+    template_name = "users/my_profile.html"
+    
     def get_object(self):
         return self.request.user.profile
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
+        user = self.request.user
+
+        context["created_activities"] = Activity.objects.filter(
+            creator=user
+        ).select_related("creator")
+
+        context["participations"] = Activity.objects.filter(
+            participations__user=user
+        ).select_related("creator")
+
+        return context
+    
+class ProfileDetailView(LoginRequiredMixin, DetailView):
+    model = Profile
+    template_name = "users/profile.html"
+    
+    def get_object(self):
+        return get_object_or_404(Profile, user_id=self.kwargs["user_id"])
+    
 class ProfileUpdateView(LoginRequiredMixin, View):
-
     template_name = "users/profile_update.html"
 
     def get(self, request):
@@ -56,7 +82,7 @@ class ProfileUpdateView(LoginRequiredMixin, View):
             profile = profile_form.save(commit=False) #lo trae a memoria sin guardar en bd
             profile.update_completion_status()
             profile.save()
-            return redirect("users:profile")
+            return redirect("users:my_profile")
 
         return render(
         request,
