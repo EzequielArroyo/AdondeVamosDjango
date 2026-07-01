@@ -1,16 +1,89 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 p-4">
+                
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+                    <div>
+                        <h2 class="h4 mb-1 fw-bold text-dark">
+                            @{{ profile.user.username }}
+                        </h2>
+                    </div>
+                    
+                    <a href="#" class="btn btn-outline-primary btn-sm px-3 rounded-pill fw-medium">
+                        Edit Profile
+                    </a>
+                </div>
 
-<h1>PROFILE</h1>
-<p>Username: {{ user.username }}</p>
+                <div class="row g-4">
+                    
+                    <div class="col-md-6 border-end-md">
+                        <h3 class="h6 text-uppercase fw-bold text-secondary tracking-wider mb-3">
+                            Personal Information
+                        </h3>
+                        
+                        <div class="mb-3">
+                            <label class="small text-muted fw-medium d-block mb-1">Full Name</label>
+                            <span class="text-dark fw-semibold">
+                                {% if profile.user.first_name or profile.user.last_name %}
+                                    {{ profile.user.first_name }} {{ profile.user.last_name }}
+                                {% else %}
+                                    <em class="text-muted small">Not provided</em>
+                                {% endif %}
+                            </span>
+                        </div>
 
-<p>Email: {{ user.email }}</p>
+                        <div class="mb-3">
+                            <label class="small text-muted fw-medium d-block mb-1">Email Address</label>
+                            <span class="text-dark">{{ profile.user.email|default:"No email linked" }}</span>
+                        </div>
 
-<p>Fullname: {{ user.first_name }} {{ user.last_name }}</p>
+                        <div class="mb-3">
+                            <label class="small text-muted fw-medium d-block mb-1">City / Location</label>
+                            <span class="text-dark">
+                                {% if profile.city %}
+                                    <i class="bi bi-geo-alt text-muted me-1"></i>{{ profile.city }}
+                                {% else %}
+                                    <em class="text-muted small">No city specified</em>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
 
-<p>City: {{ user.profile.city }}</p>
+                    <div class="col-md-6">
+                        <h3 class="h6 text-uppercase fw-bold text-secondary tracking-wider mb-3">
+                            About Me
+                        </h3>
+                        
+                        <div class="mb-4">
+                            <label class="small text-muted fw-medium d-block mb-1">Bio</label>
+                            <p class="text-dark mb-0 lh-base text-break">
+                                {% if profile.bio %}
+                                    {{ profile.bio }}
+                                {% else %}
+                                    <em class="text-muted small">This user hasn't written a bio yet.</em>
+                                {% endif %}
+                            </p>
+                        </div>
 
-<p>Bio: {{ user.profile.bio }}</p>
+                        <hr class="text-muted opacity-25 my-3">
 
+                        <div class="d-flex gap-4">
+                            <div>
+                                <label class="small text-muted fw-medium d-block mb-0">Member Since</label>
+                                <span class="small text-secondary">{{ profile.created_at|date:"M d, Y" }}</span>
+                            </div>
+                            <div>
+                                <label class="small text-muted fw-medium d-block mb-0">Last Updated</label>
+                                <span class="small text-secondary">{{ profile.updated_at|date:"M d, Y" }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div> </div> </div>
+    </div>
+</div>
 {% endblock %}
