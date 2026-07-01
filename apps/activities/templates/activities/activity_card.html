@@ -1,19 +1,28 @@
 <div class="card shadow-sm border-0 mb-3">
   <div class="card-body p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
     <div style="flex: 1; min-width: 250px;">
-      <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+      
+      <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
         <h5 class="card-title fw-bold mb-0 text-dark">{{ activity.title }}</h5>
         
-        {% if activity.status == 'active' or activity.status == 'open' %}
-            <span class="badge bg-success-subtle text-success border border-success-subtle fs-7">Active</span>
-        {% elif activity.status == 'full' %}
-            <span class="badge bg-warning-subtle text-warning-dominant border border-warning-subtle fs-7">Full</span>
-        {% elif activity.status == 'completed' %}
-            <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fs-7">Completed</span>
+        {% if activity.display_status == 'open' %}
+          <span class="badge bg-success-subtle text-success border border-success-subtle fs-7">Open</span>
+        {% elif activity.display_status == 'full' %}
+          <span class="badge bg-warning-subtle text-warning border border-warning-subtle fs-7">Full</span>
+        {% elif activity.display_status == 'finished' %}
+          <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fs-7">Finished</span>
+        {% elif activity.display_status == 'closed' %}
+          <span class="badge bg-danger-subtle text-danger border border-danger-subtle fs-7">Closed</span>
+        {% elif activity.display_status == 'cancelled' %}
+          <span class="badge bg-dark-subtle text-dark border border-dark-subtle fs-7">Cancelled</span>
         {% else %}
-            <span class="badge bg-info-subtle text-info border border-info-subtle fs-7">{{ activity.status|title }}</span>
+          <span class="badge bg-info-subtle text-info border border-info-subtle fs-7">{{ activity.display_status|title }}</span>
         {% endif %}
       </div>
+
+      <p class="text-muted small mb-2">
+        Organizado por <span class="fw-semibold text-primary">{{ activity.creator.username }}</span>
+      </p>
       
       <p class="card-text text-secondary mb-3 text-truncate" style="max-width: 600px;">
         {{ activity.description }}

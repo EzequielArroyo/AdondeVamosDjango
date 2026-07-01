@@ -1,4 +1,4 @@
-from time import timezone
+from django.utils import timezone
 
 from django.conf import settings
 from django.db import models
@@ -44,6 +44,21 @@ class Activity(models.Model):
     @property
     def participants_count(self):
         return self.participations.count()
+    @property
+    def display_status(self):
+        if self.has_finished():
+            return "finished"
+
+        if self.status == "cancelled":
+            return "cancelled"
+
+        if self.status == "closed":
+            return "closed"
+
+        if not self.has_available_slots():
+            return "full"
+
+        return "open"
 
     def join(self, user):
 

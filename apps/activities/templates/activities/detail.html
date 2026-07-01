@@ -1,23 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<main class="container my-5">
+<div class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
         <div>
             <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
                 <h1 class="display-5 fw-bold mb-0">{{ activity.title }}</h1>
-                
-                {% if activity.status == 'active' or activity.status == 'open' %}
-                    <span class="badge bg-success shadow-sm">Active</span>
-                {% elif activity.status == 'full' %}
-                    <span class="badge bg-warning text-dark shadow-sm">Full</span>
-                {% elif activity.status == 'completed' %}
-                    <span class="badge bg-secondary shadow-sm">Completed</span>
+                {% if activity.display_status == 'open' %}
+                    <span class="badge bg-success-subtle text-success border border-success-subtle fs-7">Open</span>
+                {% elif activity.display_status == 'full' %}
+                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle fs-7">Full</span>
+                {% elif activity.display_status == 'finished' %}
+                    <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fs-7">Finished</span>
+                {% elif activity.display_status == 'closed' %}
+                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle fs-7">Closed</span>
+                {% elif activity.display_status == 'cancelled' %}
+                    <span class="badge bg-dark-subtle text-dark border border-dark-subtle fs-7">Cancelled</span>
                 {% else %}
-                    <span class="badge bg-info text-dark shadow-sm">{{ activity.status|title }}</span>
+                    <span class="badge bg-info-subtle text-info border border-info-subtle fs-7">{{ activity.display_status|title }}</span>
                 {% endif %}
             </div>
-            
             <p class="text-muted mb-0 fs-5">
                 Organized by <span class="fw-semibold text-primary">{{ activity.creator.username }}</span>
             </p>
@@ -106,5 +108,5 @@
             </div>
         </div>
     </div>
-</main>
+</div>
 {% endblock %}
