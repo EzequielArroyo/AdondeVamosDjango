@@ -14,7 +14,7 @@ class RegisterView(CreateView):
 
     form_class = RegisterForm
     template_name = "users/register.html"
-    success_url = reverse_lazy("profile_update")
+    success_url = reverse_lazy("users:profile_update")
 
     def form_valid(self, form):                 #Re defino porque necesito auto login
         response = super().form_valid(form)     #utilizo el metodo original
@@ -56,7 +56,7 @@ class ProfileUpdateView(LoginRequiredMixin, View):
             profile = profile_form.save(commit=False) #lo trae a memoria sin guardar en bd
             profile.update_completion_status()
             profile.save()
-            return redirect("profile")
+            return redirect("users:profile")
 
         return render(
         request,

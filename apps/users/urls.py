@@ -5,7 +5,7 @@ from .views import (
     ProfileDetailView,
     ProfileUpdateView
 )
-
+app_name = "users"
 urlpatterns = [
     path("register/", RegisterView.as_view(), name="register"),
     path("profile/", ProfileDetailView.as_view(), name="profile"),
