@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5 row justify-content-center col-lg-8 col-md-10">
+    <h2 class="text-center">Activities</h2>
+    <ul class="d-flex flex-column gap-3 list-unstyled">
+    {% for activity in activities %}
+        <li>
+            {% include "activities/activity_card.html"  with activity=activity %}
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}

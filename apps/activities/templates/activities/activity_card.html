@@ -1,0 +1,43 @@
+<div class="card shadow-sm border-0 mb-3">
+  <div class="card-body p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div style="flex: 1; min-width: 250px;">
+      <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+        <h5 class="card-title fw-bold mb-0 text-dark">{{ activity.title }}</h5>
+        
+        {% if activity.status == 'active' or activity.status == 'open' %}
+            <span class="badge bg-success-subtle text-success border border-success-subtle fs-7">Active</span>
+        {% elif activity.status == 'full' %}
+            <span class="badge bg-warning-subtle text-warning-dominant border border-warning-subtle fs-7">Full</span>
+        {% elif activity.status == 'completed' %}
+            <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fs-7">Completed</span>
+        {% else %}
+            <span class="badge bg-info-subtle text-info border border-info-subtle fs-7">{{ activity.status|title }}</span>
+        {% endif %}
+      </div>
+      
+      <p class="card-text text-secondary mb-3 text-truncate" style="max-width: 600px;">
+        {{ activity.description }}
+      </p>
+      
+      <p class="card-text mb-0">
+        <small class="text-muted d-flex align-items-center gap-2 flex-wrap">
+          <span><i class="bi bi-calendar-event"></i> {{ activity.date|date:"M d, Y @ H:i" }}</span>
+          <span class="text-black-50">•</span>
+          <span><i class="bi bi-geo-alt"></i> {{ activity.location }}</span>
+          <span class="text-black-50">•</span>
+          
+          <span class="badge bg-light text-secondary border px-2 py-1 fw-normal">
+            <i class="bi bi-people-fill me-1"></i>
+            {{ activity.participants_count }} / {{ activity.max_participants }} slots
+          </span>
+        </small>
+      </p>
+    </div>
+    
+    <div>
+      <a href="{% url 'activities:detail' activity.id %}" class="btn btn-primary px-4">
+        View Details
+      </a>
+    </div>
+  </div>
+</div>

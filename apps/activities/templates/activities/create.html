@@ -1,0 +1,96 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<main class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4 p-md-5">
+                    
+                    <div class="border-bottom pb-3 mb-4">
+                        <h1 class="display-6 fw-bold mb-1">Create Activity</h1>
+                        <p class="text-muted mb-0">Fill out the details below to host a new activity.</p>
+                    </div>
+
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger shadow-sm border-0 mb-4" role="alert">
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label {{ form.title.id_for_label }} class="form-label fw-medium text-secondary">Title</label>
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                                <div class="invalid-feedback d-block mt-1">
+                                    {{ form.title.errors|striptags }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label {{ form.description.id_for_label }} class="form-label fw-medium text-secondary">Description</label>
+                            {{ form.description }}
+                            {% if form.description.errors %}
+                                <div class="invalid-feedback d-block mt-1">
+                                    {{ form.description.errors|striptags }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label {{ form.date.id_for_label }} class="form-label fw-medium text-secondary">Date and Time</label>
+                                {{ form.date }}
+                                {% if form.date.errors %}
+                                    <div class="invalid-feedback d-block mt-1">
+                                        {{ form.date.errors|striptags }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label {{ form.location.id_for_label }} class="form-label fw-medium text-secondary">Location</label>
+                                {{ form.location }}
+                                {% if form.location.errors %}
+                                    <div class="invalid-feedback d-block mt-1">
+                                        {{ form.location.errors|striptags }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label {{ form.max_participants.id_for_label }} class="form-label fw-medium text-secondary">Max Participants</label>
+                            <div style="max-width: 200px;">
+                                {{ form.max_participants }}
+                            </div>
+                            {% if form.max_participants.errors %}
+                                <div class="invalid-feedback d-block mt-1">
+                                    {{ form.max_participants.errors|striptags }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                            <a href="{% url 'activities:list' %}" class="btn btn-outline-secondary px-4">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                Create Activity
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+{% endblock %}
