@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-9">
+            
+            <div class="card shadow-sm border-0 p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+                    <div>
+                        <h2 class="h4 mb-1 fw-bold text-dark">
+                            @{{ profile.user.username }}
+                        </h2>
+                    </div>
+                    
+                    <a href="{% url 'users:profile_update' %}" class="btn btn-outline-primary btn-sm px-3 rounded-pill fw-medium">
+                        Edit Profile
+                    </a>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-6 border-end-md">
+                        <h3 class="h6 text-uppercase fw-bold text-secondary tracking-wider mb-3">
+                            Personal Information
+                        </h3>
+                        
+                        <div class="mb-3">
+                            <label class="small text-muted fw-medium d-block mb-1">Full Name</label>
+                            <span class="text-dark fw-semibold">
+                                {% if profile.user.first_name or profile.user.last_name %}
+                                    {{ profile.user.first_name }} {{ profile.user.last_name }}
+                                {% else %}
+                                    <em class="text-muted small">Not provided</em>
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="small text-muted fw-medium d-block mb-1">Email Address</label>
+                            <span class="text-dark">{{ profile.user.email|default:"No email linked" }}</span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="small text-muted fw-medium d-block mb-1">City / Location</label>
+                            <span class="text-dark">
+                                {% if profile.city %}
+                                    <i class="bi bi-geo-alt text-muted me-1"></i>{{ profile.city }}
+                                {% else %}
+                                    <em class="text-muted small">No city specified</em>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h3 class="h6 text-uppercase fw-bold text-secondary tracking-wider mb-3">
+                            About Me
+                        </h3>
+                        
+                        <div class="mb-4">
+                            <label class="small text-muted fw-medium d-block mb-1">Bio</label>
+                            <p class="text-dark mb-0 lh-base text-break">
+                                {% if profile.bio %}
+                                    {{ profile.bio }}
+                                {% else %}
+                                    <em class="text-muted small">This user hasn't written a bio yet.</em>
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        <hr class="text-muted opacity-25 my-3">
+
+                        <div class="d-flex gap-4">
+                            <div>
+                                <label class="small text-muted fw-medium d-block mb-0">Member Since</label>
+                                <span class="small text-secondary">{{ profile.created_at|date:"M d, Y" }}</span>
+                            </div>
+                            <div>
+                                <label class="small text-muted fw-medium d-block mb-0">Last Updated</label>
+                                <span class="small text-secondary">{{ profile.updated_at|date:"M d, Y" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+
+            <div class="row g-4 mt-2">
+                
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center mb-3">
+                        <h3 class="h6 text-uppercase fw-bold text-secondary tracking-wider mb-0 me-2">
+                            My Activities
+                        </h3>
+                        <span class="badge bg-primary-subtle text-primary rounded-pill small fw-semibold">
+                            {{ created_activities|length }}
+                        </span>
+                    </div>
+                    
+                    <div class="row g-3">
+                        {% if created_activities %}
+                            {% for act in created_activities %}
+                                <div class="col-100 w-100">
+                                    {% include "activities/activity_card.html" with activity=act %}
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="col-100 w-100">
+                                <div class="card border-0 shadow-sm p-4 text-center text-muted bg-light-subtle">
+                                    <i class="bi bi-plus-circle display-6 opacity-50 mb-2"></i>
+                                    <p class="small mb-0">You haven't created any activities yet.</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center mb-3">
+                        <h3 class="h6 text-uppercase fw-bold text-secondary tracking-wider mb-0 me-2">
+                            Going To
+                        </h3>
+                        <span class="badge bg-success-subtle text-success rounded-pill small fw-semibold">
+                            {{ participations|length }}
+                        </span>
+                    </div>
+                    
+                    <div class="row g-3">
+                        {% if participations %}
+                            {% for act in participations %}
+                                <div class="col-100 w-100">
+                                    {% include "activities/activity_card.html" with activity=act %}
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="col-100 w-100">
+                                <div class="card border-0 shadow-sm p-4 text-center text-muted bg-light-subtle">
+                                    <i class="bi bi-calendar-event display-6 opacity-50 mb-2"></i>
+                                    <p class="small mb-0">You're not attending any upcoming activities.</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
