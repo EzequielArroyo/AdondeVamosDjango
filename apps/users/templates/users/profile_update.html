@@ -1,21 +1,138 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow-sm border-0 p-4">
+                
+                <div class="text-center mb-4 pb-2 border-bottom">
+                    <h2 class="h4 fw-bold text-dark mb-1">Edit Profile</h2>
+                    <p class="text-muted small">Update your personal information and biography</p>
+                </div>
 
-<h1>Edit profile</h1>
+                <form method="post" novalidate>
+                    {% csrf_token %}
 
-<form method="post">
+                    {% if user_form.non_field_errors or profile_form.non_field_errors %}
+                        <div class="alert alert-danger py-2 px-3 small border-0 rounded-3 mb-4">
+                            {% for error in user_form.non_field_errors %}
+                                <p class="mb-0">{{ error }}</p>
+                            {% endfor %}
+                            {% for error in profile_form.non_field_errors %}
+                                <p class="mb-0">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
 
-    {% csrf_token %}
+                    <h3 class="h6 text-uppercase fw-bold text-secondary tracking-wider mb-3">
+                        Personal Info
+                    </h3>
+                    
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label签名 for="{{ user_form.first_name.id_for_label }}" class="form-label small fw-medium text-secondary mb-1">First Name</label签名>
+                            <input 
+                                type="text" 
+                                name="{{ user_form.first_name.html_name }}" 
+                                id="{{ user_form.first_name.id_for_label }}"
+                                class="form-control {% if user_form.first_name.errors %}is-invalid{% endif %}"
+                                placeholder="Enter first name"
+                                value="{{ user_form.first_name.value|default:'' }}"
+                            >
+                            {% if user_form.first_name.errors %}
+                                <div class="invalid-feedback small">
+                                    {{ user_form.first_name.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
 
-    {{ user_form.as_p }}
+                        <div class="col-md-6">
+                            <label for="{{ user_form.last_name.id_for_label }}" class="form-label small fw-medium text-secondary mb-1">Last Name</label>
+                            <input 
+                                type="text" 
+                                name="{{ user_form.last_name.html_name }}" 
+                                id="{{ user_form.last_name.id_for_label }}"
+                                class="form-control {% if user_form.last_name.errors %}is-invalid{% endif %}"
+                                placeholder="Enter last name"
+                                value="{{ user_form.last_name.value|default:'' }}"
+                            >
+                            {% if user_form.last_name.errors %}
+                                <div class="invalid-feedback small">
+                                    {{ user_form.last_name.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
 
-    {{ profile_form.as_p }}
+                    <div class="mb-4">
+                        <label for="{{ user_form.email.id_for_label }}" class="form-label small fw-medium text-secondary mb-1">Email Address</label>
+                        <input 
+                            type="email" 
+                            name="{{ user_form.email.html_name }}" 
+                            id="{{ user_form.email.id_for_label }}"
+                            class="form-control {% if user_form.email.errors %}is-invalid{% endif %}"
+                            placeholder="name@example.com"
+                            value="{{ user_form.email.value|default:'' }}"
+                            required
+                        >
+                        {% if user_form.email.errors %}
+                            <div class="invalid-feedback small">
+                                {{ user_form.email.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
 
-    <button type="submit">
-        Save
-    </button>
 
-</form>
+                    <h3 class="h6 text-uppercase fw-bold text-secondary tracking-wider mb-3 pt-2">
+                        Profile Details
+                    </h3>
 
+                    <div class="mb-3">
+                        <label for="{{ profile_form.city.id_for_label }}" class="form-label small fw-medium text-secondary mb-1">City / Location</label>
+                        <input 
+                            type="text" 
+                            name="{{ profile_form.city.html_name }}" 
+                            id="{{ profile_form.city.id_for_label }}"
+                            class="form-control {% if profile_form.city.errors %}is-invalid{% endif %}"
+                            placeholder="e.g. Buenos Aires"
+                            value="{{ profile_form.city.value|default:'' }}"
+                        >
+                        {% if profile_form.city.errors %}
+                            <div class="invalid-feedback small">
+                                {{ profile_form.city.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="{{ profile_form.bio.id_for_label }}" class="form-label small fw-medium text-secondary mb-1">Biography</label>
+                        <textarea 
+                            name="{{ profile_form.bio.html_name }}" 
+                            id="{{ profile_form.bio.id_for_label }}"
+                            class="form-control {% if profile_form.bio.errors %}is-invalid{% endif %}"
+                            rows="4"
+                            placeholder="Tell us about yourself..."
+                        >{{ profile_form.bio.value|default:'' }}</textarea>
+                        {% if profile_form.bio.errors %}
+                            <div class="invalid-feedback small">
+                                {{ profile_form.bio.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 pt-2 border-top">
+                        <a href="{% url 'users:profile' %}" class="btn btn-light rounded-pill px-4 fw-medium">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 fw-medium">
+                            Save Changes
+                        </button>
+                    </div>
+
+                </form>
+
+            </div> </div>
+    </div>
+</div>
 {% endblock %}

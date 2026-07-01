@@ -1,19 +1,67 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container flex-grow-1 d-flex align-items-center justify-content-center py-2">
+    <div class="row justify-content-center w-100">
+        <div class="col-md-6 col-lg-5 col-xl-4">
+            <div class="card shadow-sm border-0 p-3 p-sm-4">
+                
+                <div class="text-center mb-3">
+                    <h2 class="h5 fw-bold text-dark mb-1">Welcome Back</h2>
+                    <p class="text-muted small mb-0">Log in to continue exploring activities</p>
+                </div>
 
-<h1>Login</h1>
+                <form method="post" novalidate>
+                    {% csrf_token %}
 
-<form method="post">
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger py-1 px-3 small border-0 rounded-3 mb-2" style="font-size: 0.8rem;">
+                            {% for error in form.non_field_errors %}
+                                <p class="mb-0">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
 
-    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-2">
+                            <label for="{{ field.id_for_label }}" class="form-label small fw-medium text-secondary mb-1" style="font-size: 0.825rem;">
+                                {{ field.label }}
+                            </label>
+                            
+                            <input 
+                                type="{{ field.field.widget.input_type|default:'text' }}" 
+                                name="{{ field.html_name }}" 
+                                id="{{ field.id_for_label }}"
+                                class="form-control form-control-sm {% if field.errors %}is-invalid{% endif %}"
+                                placeholder="Enter your {{ field.label|lower }}"
+                                {% if field.value %}value="{{ field.value }}"{% endif %}
+                                {% if field.field.required %}required{% endif %}
+                            >
 
-    {{ form.as_p }}
+                            {% if field.errors %}
+                                <div class="invalid-feedback small" style="font-size: 0.75rem;">
+                                    {% for error in field.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
 
-    <button type="submit">
-        Login
-    </button>
+                    <div class="d-grid mt-3">
+                        <button type="submit" class="btn btn-primary rounded-pill fw-medium py-2 small">
+                            Log In
+                        </button>
+                    </div>
+                </form>
 
-</form>
+                <div class="text-center mt-3 pt-2 border-top text-muted small" style="font-size: 0.8rem;">
+                    Don't have an account? 
+                    <a href="{% url 'users:register' %}" class="text-decoration-none fw-medium text-primary ms-1">Sign Up</a>
+                </div>
 
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
